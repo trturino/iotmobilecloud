@@ -1,9 +1,9 @@
 
 #include <WiFi.h>
 #include "Esp32MQTTClient.h"
-// Please input the SSID and password of WiFi
 const char* ssid     = "MySpectrumWiFi31-2G";
 const char* password = "mobileturtle769";
+
 const int LED = 32;
 static const char* connectionString = "HostName=turino.azure-devices.net;DeviceId=turinodevice;SharedAccessKey=9/nEQgjJgFrmqWnBZDIHW8b3BAdVEKUfjesFT0fzyNI=";
 static bool hasIoTHub = false;
@@ -55,7 +55,10 @@ void loop() {
   if (hasIoTHub)
   {
     char buff[128];
-    snprintf(buff, 128, "{\"topic\":\"iot\"}");
+    if (isLightOn)
+      snprintf(buff, 128, "{\"topic\":\"iot\", \"isOn\":1}");
+    else
+      snprintf(buff, 128, "{\"topic\":\"iot\", \"isOn\":0}");
     
     if (Esp32MQTTClient_SendEvent(buff))
     {
