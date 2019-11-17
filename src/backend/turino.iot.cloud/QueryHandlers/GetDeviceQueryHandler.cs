@@ -24,4 +24,4 @@ namespace turino.iot.cloud.QueryHandlers
             return _deviceRepository.GetDevice(command.DeviceId);
         }
     }
-}`
+}
