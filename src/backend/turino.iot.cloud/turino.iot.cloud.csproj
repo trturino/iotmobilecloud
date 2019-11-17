@@ -5,19 +5,14 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Cosmonaut" Version="2.11.3" />
+    <PackageReference Include="Cosmonaut.ApplicationInsights" Version="2.1.1" />
     <PackageReference Include="Cosmonaut.Extensions.Microsoft.DependencyInjection" Version="2.3.0" />
-    <PackageReference Include="FunctionMonkey" Version="3.0.17" />
-    <PackageReference Include="FunctionMonkey.Compiler" Version="3.0.17" />
-    <PackageReference Include="Microsoft.Azure.Devices" Version="1.18.1" />
-    <PackageReference Include="Microsoft.Azure.ServiceBus" Version="4.1.1" />
-    <PackageReference Include="Microsoft.Azure.WebJobs" Version="3.0.14" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.ServiceBus" Version="2.3.0" />
+    <PackageReference Include="Microsoft.Azure.Devices" Version="1.18.2" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.ServiceBus" Version="3.0.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.29" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="extensions.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="host.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

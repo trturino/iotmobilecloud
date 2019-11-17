@@ -1,13 +1,11 @@
-﻿using AzureFromTheTrenches.Commanding.Abstractions;
-using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using turino.iot.cloud.Models;
 using turino.iot.cloud.Queries;
 using turino.iot.cloud.Repositories;
 
 namespace turino.iot.cloud.QueryHandlers
 {
-    public class GetDeviceQueryHandler : ICommandHandler<GetDevice, Device>
+    public class GetDeviceQueryHandler : IQueryHandler<GetDeviceQuery, Device>
     {
         private readonly IDeviceRepository _deviceRepository;
 
@@ -16,12 +14,9 @@ namespace turino.iot.cloud.QueryHandlers
             _deviceRepository = deviceRepository;
         }
 
-        public Task<Device> ExecuteAsync(GetDevice command, Device previousResult)
+        public Task<Device> ExecuteAsync(GetDeviceQuery command)
         {
-            if (command.DeviceId == Guid.Empty)
-                return null;
-
-            return _deviceRepository.GetDevice(command.DeviceId);
+            return _deviceRepository.Get(command.DeviceId);
         }
     }
 }

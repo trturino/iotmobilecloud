@@ -1,9 +1,8 @@
-﻿using AzureFromTheTrenches.Commanding.Abstractions;
-using System;
+﻿using System;
 
 namespace turino.iot.cloud.Commands
 {
-    public class SwitchDeviceLight : ICommand
+    public class SwitchDeviceLightCommand : ICommand
     {
         public Guid DeviceId { get; set; }
 

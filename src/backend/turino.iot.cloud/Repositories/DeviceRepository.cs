@@ -1,6 +1,6 @@
 ﻿using Cosmonaut;
-using Cosmonaut.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using turino.iot.cloud.Models;
 
@@ -15,14 +15,19 @@ namespace turino.iot.cloud.Repositories
             _deviceStore = deviceStore;
         }
 
-        public Task<Device> GetDevice(Guid deviceId)
+        public Task<IEnumerable<Device>> GetAll()
+        {
+            return _deviceStore.QueryMultipleAsync("SELECT * FROM c");
+        }
+
+        public Task<Device> Get(Guid deviceId)
         {
             return _deviceStore.FindAsync(deviceId.ToString());
         }
 
-        public Task<Device> GetDeviceByName(string deviceName)
+        public async Task<Device> GetByName(string deviceName)
         {
-            return _deviceStore.Query().FirstOrDefaultAsync(x => x.DeviceName == deviceName);
+            return await _deviceStore.QuerySingleAsync($"SELECT * FROM c WHERE c.deviceName = \"{deviceName}\"");
         }
 
         public Task Insert(Device device)

@@ -1,13 +1,12 @@
-﻿using System.Text;
-using AzureFromTheTrenches.Commanding.Abstractions;
-using Microsoft.Azure.Devices;
+﻿using Microsoft.Azure.Devices;
+using System.Text;
 using System.Threading.Tasks;
 using turino.iot.cloud.Commands;
 using turino.iot.cloud.Repositories;
 
 namespace turino.iot.cloud.CommandHandler
 {
-    public class SwitchDeviceLightCommandHandler : ICommandHandler<SwitchDeviceLight>
+    public class SwitchDeviceLightCommandHandler : ICommandHandler<SwitchDeviceLightCommand>
     {
         private readonly IDeviceRepository _deviceRepository;
         private readonly ServiceClient _serviceClient;
@@ -21,17 +20,20 @@ namespace turino.iot.cloud.CommandHandler
             _serviceClient = serviceClient;
         }
 
-        public async Task ExecuteAsync(SwitchDeviceLight command)
+        public async Task ExecuteAsync(SwitchDeviceLightCommand command)
         {
-            var device = await _deviceRepository.GetDevice(command.DeviceId);
+            var device = await _deviceRepository.Get(command.DeviceId);
             if (command.Value)
             {
-                await SendDeviceMessage(device.DeviceName, "A");
+                await SendDeviceMessage(device.DeviceName, "1");
             }
             else
             {
-                await SendDeviceMessage(device.DeviceName, "B");
+                await SendDeviceMessage(device.DeviceName, "0");
             }
+
+            device.Status = command.Value;
+            await _deviceRepository.Update(device);
         }
 
         private async Task SendDeviceMessage(string deviceName, string message)

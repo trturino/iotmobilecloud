@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Cosmonaut.Attributes;
 
 namespace turino.iot.cloud.Models
 {
     public class Device
     {
-        public Guid DeviceId { get; set; }
+        [CosmosPartitionKey]
+        public string Id { get; set; }
 
         public string DeviceName { get; set; }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using AzureFromTheTrenches.Commanding.Abstractions;
 using turino.iot.cloud.Models;
 
 namespace turino.iot.cloud.Commands
