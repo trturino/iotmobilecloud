@@ -14,7 +14,7 @@ namespace turino.iot.cloud.Functions
     {
         [FunctionName("GetDeviceDetails")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "devices/{deviceId}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "devices/{deviceId}")] HttpRequest req,
             string deviceId,
             ILogger log)
         {
