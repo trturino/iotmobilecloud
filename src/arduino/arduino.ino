@@ -4,7 +4,7 @@
 const char* ssid     = "MySpectrumWiFi31-2G";
 const char* password = "mobileturtle769";
 
-const int LED = 32;
+const int LED = 2;
 static const char* connectionString = "HostName=turino.azure-devices.net;DeviceId=turinodevice;SharedAccessKey=9/nEQgjJgFrmqWnBZDIHW8b3BAdVEKUfjesFT0fzyNI=";
 static bool hasIoTHub = false;
 static bool isLightOn = false;

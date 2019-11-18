@@ -1,47 +1,21 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-
-using trtrurino.iot.mobile.Models;
-using trtrurino.iot.mobile.Views;
+using trtrurino.iot.mobile.Services;
 using trtrurino.iot.mobile.ViewModels;
+using Xamarin.Forms;
 
 namespace trtrurino.iot.mobile.Views
 {
-    // Learn more about making custom code visible in the Xamarin.Forms previewer
-    // by visiting https://aka.ms/xamarinforms-previewer
     [DesignTimeVisible(false)]
     public partial class ItemsPage : ContentPage
     {
-        ItemsViewModel viewModel;
+        private ItemsViewModel viewModel;
 
         public ItemsPage()
         {
             InitializeComponent();
 
-            BindingContext = viewModel = new ItemsViewModel();
-        }
-
-        async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
-        {
-            var item = args.SelectedItem as Item;
-            if (item == null)
-                return;
-
-            await Navigation.PushAsync(new ItemDetailPage(new ItemDetailViewModel(item)));
-
-            // Manually deselect item.
-            ItemsListView.SelectedItem = null;
-        }
-
-        async void AddItem_Clicked(object sender, EventArgs e)
-        {
-            await Navigation.PushModalAsync(new NavigationPage(new NewItemPage()));
+            BindingContext = viewModel = new ItemsViewModel(new DeviceService());
         }
 
         protected override void OnAppearing()
@@ -50,6 +24,27 @@ namespace trtrurino.iot.mobile.Views
 
             if (viewModel.Items.Count == 0)
                 viewModel.LoadItemsCommand.Execute(null);
+        }
+
+        private void Switch_OnToggled(object sender, ToggledEventArgs e)
+        {
+            var sw = sender as Switch;
+            if (sw == null) return;
+
+            if (!viewModel.IsBusy)
+            {
+                var device = sw.BindingContext as Models.Device;
+                if (device == null) return;
+                sw.Toggled -= Switch_OnToggled;
+                viewModel.SetStatus.Execute(device);
+            }
+        }
+
+        private void BindableObject_OnBindingContextChanged(object sender, EventArgs e)
+        {
+            if (!(sender is Switch s)) return;
+
+            s.Toggled += Switch_OnToggled;
         }
     }
 }

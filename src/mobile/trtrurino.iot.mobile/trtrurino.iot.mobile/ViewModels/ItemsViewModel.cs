@@ -2,34 +2,31 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
-
+using trtrurino.iot.mobile.Services;
 using Xamarin.Forms;
-
-using trtrurino.iot.mobile.Models;
-using trtrurino.iot.mobile.Views;
+using Device = trtrurino.iot.mobile.Models.Device;
 
 namespace trtrurino.iot.mobile.ViewModels
 {
     public class ItemsViewModel : BaseViewModel
     {
-        public ObservableCollection<Item> Items { get; set; }
+        private readonly IDeviceService _deviceService;
+
+        public ObservableCollection<Device> Items { get; set; }
         public Command LoadItemsCommand { get; set; }
 
-        public ItemsViewModel()
-        {
-            Title = "Devices";
-            Items = new ObservableCollection<Item>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+        public Command SetStatus { get; set; }
 
-            MessagingCenter.Subscribe<NewItemPage, Item>(this, "AddItem", async (obj, item) =>
-            {
-                var newItem = item as Item;
-                Items.Add(newItem);
-                await DataStore.AddItemAsync(newItem);
-            });
+        public ItemsViewModel(IDeviceService deviceService)
+        {
+            _deviceService = deviceService;
+            Title = "Devices";
+            Items = new ObservableCollection<Device>();
+            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            SetStatus = new Command(async (d) => await ExecuteSetStatusCommand((Device)d));
         }
 
-        async Task ExecuteLoadItemsCommand()
+        private async Task ExecuteSetStatusCommand(Device device)
         {
             if (IsBusy)
                 return;
@@ -39,7 +36,31 @@ namespace trtrurino.iot.mobile.ViewModels
             try
             {
                 Items.Clear();
-                var items = await DataStore.GetItemsAsync(true);
+                await _deviceService.SetStatus(device.Id, device.Status);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+            await ExecuteLoadItemsCommand();
+        }
+
+        private async Task ExecuteLoadItemsCommand()
+        {
+            if (IsBusy)
+                return;
+
+            IsBusy = true;
+
+            try
+            {
+                Items.Clear();
+                var items = await _deviceService.GetDevices();
                 foreach (var item in items)
                 {
                     Items.Add(item);

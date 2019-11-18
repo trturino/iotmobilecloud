@@ -1,19 +1,13 @@
-﻿using System;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-using trtrurino.iot.mobile.Services;
-using trtrurino.iot.mobile.Views;
+﻿using Xamarin.Forms;
 
 namespace trtrurino.iot.mobile
 {
     public partial class App : Application
     {
-
         public App()
         {
             InitializeComponent();
 
-            DependencyService.Register<MockDataStore>();
             MainPage = new AppShell();
         }
 
