@@ -1,10 +1,10 @@
 
 #include <WiFi.h>
 #include "Esp32MQTTClient.h"
-const char* ssid     = "MySpectrumWiFi31-2G";
-const char* password = "mobileturtle769";
+const char* ssid     = "Turino3g";
+const char* password = "ecljav01";
 
-const int LED = 2;
+const int LED = 23;
 static const char* connectionString = "HostName=turino.azure-devices.net;DeviceId=turinodevice;SharedAccessKey=9/nEQgjJgFrmqWnBZDIHW8b3BAdVEKUfjesFT0fzyNI=";
 static bool hasIoTHub = false;
 static bool isLightOn = false;
