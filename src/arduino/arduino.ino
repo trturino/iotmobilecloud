@@ -1,8 +1,8 @@
 
 #include <WiFi.h>
 #include "Esp32MQTTClient.h"
-const char* ssid     = "Turino3g";
-const char* password = "ecljav01";
+const char* ssid     = "";
+const char* password = "";
 
 const int LED = 23;
 static const char* connectionString = "HostName=turino.azure-devices.net;DeviceId=turinodevice;SharedAccessKey=9/nEQgjJgFrmqWnBZDIHW8b3BAdVEKUfjesFT0fzyNI=";
